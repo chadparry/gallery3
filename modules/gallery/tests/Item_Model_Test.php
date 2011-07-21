@@ -394,20 +394,6 @@ class Item_Model_Test extends Gallery_Unit_Test_Case {
     $this->assert_equal(20337, filesize($photo->file_path()));
   }
 
-  public function replacement_data_file_must_be_same_mime_type_test() {
-    // Random photo is modules/gallery/tests/test.jpg
-    $photo = test::random_photo();
-    $photo->set_data_file(MODPATH . "gallery/images/graphicsmagick.png");
-
-    try {
-      $photo->save();
-    } catch (ORM_Validation_Exception $e) {
-      $this->assert_same(array("name" => "cant_change_mime_type"), $e->validation->errors());
-      return;  // pass
-    }
-    $this->assert_true(false, "Shouldn't get here");
-  }
-
   public function urls_test() {
     $photo = test::random_photo();
     $this->assert_true(
