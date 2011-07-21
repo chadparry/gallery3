@@ -394,6 +394,18 @@ class Item_Model_Test extends Gallery_Unit_Test_Case {
     $this->assert_equal(20337, filesize($photo->file_path()));
   }
 
+  public function unsafe_data_file_replacement_test() {
+    try {
+      $photo = test::random_photo();
+      $photo->set_data_file(MODPATH . "gallery/tests/Item_Model_Test.php");
+      $photo->save();
+    } catch (ORM_Validation_Exception $e) {
+      $this->assert_same(array("mime_type" => "invalid"), $e->validation->errors());
+      return;  // pass
+    }
+    $this->assert_true(false, "Shouldn't get here");
+  }
+
   public function urls_test() {
     $photo = test::random_photo();
     $this->assert_true(
